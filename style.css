@@ -1,7 +1,7 @@
 :root {
     --bgColor: #1f4272ee;
     --textColor: #FDF0F0;
-    --secondaryColor: hsl(0, 76%, 97%,0.4);
+    --secondaryColor: hsl(0, 76%, 97%, 0.4);
 }
 
 * {
@@ -45,7 +45,7 @@ h1 {
     display: grid;
     grid-template-columns: 1fr 1fr;
     margin: 20px 0px;
-    margin-left:9px;
+    margin-left: 9px;
 }
 
 #btn {
@@ -55,7 +55,7 @@ h1 {
 
 #info {
     color: yellow;
-    font-size: 35px;
+    font-size: 3vh;
 }
 
 button {
@@ -64,6 +64,9 @@ button {
     border: none;
     padding: 5px 20px;
     cursor: pointer;
+    font-family: "Roboto Mono", monospace;
+    font-size: 2.5vh;
+    font-weight: 600;
     color: rgb(0, 0, 0);
 }
 
@@ -79,29 +82,62 @@ div.word {
     margin: 0 7px;
     font-size: 33px;
 }
-.letter{
-    font-family: "Roboto Mono", monospace ;
-}
-#focus-error{
-    position: absolute;
-    inset:10px;
-    text-align:center;
-    padding-top:35px;
+
+.letter {
+    font-family: "Roboto Mono", monospace;
 }
 
-#words{
-    filter: blur(3px);
-    color:var(--secondaryColor)
+#focus-error {
+    position: absolute;
+    inset: 10px;
+    text-align: center;
+    padding-top: 35px;
 }
-#game:focus #words{
+
+#words {
+    filter: blur(3px);
+    color: var(--secondaryColor)
+}
+
+#game:focus #words {
     filter: blur(0);
 }
-#game:focus #focus-error{
-    display:none;
+
+#game:focus #focus-error {
+    display: none;
 }
-.letter.corect{
-    color:#fff;
+
+.letter.correct {
+    color: #fff;
 }
-.letter.incorect{
-    color:#ff0000d3;
+
+.letter.incorrect {
+    color: #ff0000d3;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+#cursor {
+    display:none; /* pel tomada none*/
+    width: 2px;
+    height: 1.6rem;
+    background-color: yellow;
+    position: fixed;
+    top: 202px;
+    animation: blink 0.8s infinite;
+}
+#game:focus #cursor {
+    display: block; /* pel focus to normal*/
 }
