@@ -34,21 +34,22 @@ document.getElementById("game").addEventListener('keyup', (e) => {
     const key = e.key;
     const currentWord = document.querySelector(".word.current");
     const currentLetter = document.querySelector(".letter.current"); //current letter
-    const expectedkey = currentLetter?.innerHTML || ' ' ; //So, the main difference is that the optional chaining operator (?.) prevents an error if currentLetter is null or undefined, while the direct property access (currentLetter.innerHTML) will throw an error in that case.  if one false it's goes to the other
+    const expectedkey = currentLetter?.innerHTML || ' '; //So, the main difference is that the optional chaining operator (?.) prevents an error if currentLetter is null or undefined, while the direct property access (currentLetter.innerHTML) will throw an error in that case.  if one false it's goes to the other
     console.log({ key, expectedkey });
     const isLetter = key.length === 1 && key != ' ';
 
     //check space typed
-    const isSpace = key === ' '; 
-
+    const isSpace = key === ' ';
+    const isBackspace = key === 'Backspace';
+    const isFirstLetter = currentLetter === currentWord.firstChild;
     if (isLetter) { //check this first
         if (currentLetter) {
             addClass(currentLetter, key === expectedkey ? 'correct' : 'incorrect')
             removeClass(currentLetter, 'current'); //class jas currentletter
-            if(currentLetter.nextSibling ){ //check if the next sibling is still there if not no more add class
+            if (currentLetter.nextSibling) { //check if the next sibling is still there if not no more add class
                 addClass(currentLetter.nextSibling, 'current'); //add class from class jas to next
             }
-        }else{
+        } else {
             const incorrectLetterwhenspace = document.createElement('span');
             incorrectLetterwhenspace.innerHTML = key;
             incorrectLetterwhenspace.className = "letter incorrect extra" //adding class with javascript
@@ -68,16 +69,40 @@ document.getElementById("game").addEventListener('keyup', (e) => {
             const letterToinvalidate = [...document.querySelectorAll('.word.current .letter:not(.correct)')]; //Have the letter class, Do not have the correct class, And are inside an element with both the word and current classes. //rest of the word in div // only the rest & inncorrect 1
             //querySelectorAll: Returns a NodeList containing all matching elements.
             //can convert to array using spread operator [... ]
-            letterToinvalidate.forEach(letter =>{   //currentValue of array on first , second is index of array , third is array it's self (currentValue, index , arr )
-                addClass(letter,'incorrect');
+            letterToinvalidate.forEach(letter => {   //currentValue of array on first , second is index of array , third is array it's self (currentValue, index , arr )
+                addClass(letter, 'incorrect');
             });
         }
         removeClass(currentWord, "current");
-        addClass(currentWord.nextSibling,"current");
-        if(currentLetter){
-            removeClass(currentLetter,'current');
-            }   
-        addClass(currentWord.nextSibling.firstChild,"current");
+        addClass(currentWord.nextSibling, "current");
+        if (currentLetter) {
+            removeClass(currentLetter, 'current');
+        }
+        addClass(currentWord.nextSibling.firstChild, "current");
+
+    }
+    if (isBackspace) {//check if there a backspace? we type " "
+        if (currentLetter && isFirstLetter) { //for ah space // do class
+            //make prev word current, last letter current
+            removeClass(currentWord, 'current');
+            addClass(currentWord.previousSibling, 'current');
+            removeClass(currentLetter, 'current');
+            addClass(currentWord.previousSibling.lastChild, 'current');
+            removeClass(currentWord.previousSibling.lastChild, 'correct');
+            removeClass(currentWord.previousSibling.lastChild, 'incorrect');
+
+        }
+        if (currentLetter && !isFirstLetter) {
+            removeClass(currentLetter, 'current');
+            addClass(currentLetter.previousSibling, 'current');
+            removeClass(currentLetter.previousSibling, 'correct');
+            removeClass(currentLetter.previousSibling, 'incorrect');
+        }
+        if (!currentLetter) {
+            addClass(currentWord.lastChild, 'current');
+            removeClass(currentWord.lastChild, 'correct');
+            removeClass(currentWord.lastChild, 'incorrect');
+        }
     }
     //move cursor
     const nextLetterorword = document.querySelector('.letter.current'); //let's try
@@ -87,7 +112,18 @@ document.getElementById("game").addEventListener('keyup', (e) => {
     // cursor.style.top = (nextLetterorword || nextWord).getBoundingClientRect().top + 3 + 'px';
     // cursor.style.left = (nextLetterorword || nextWord).getBoundingClientRect()[nextLetterorword ? 'left' : 'right'] + 'px';
     //.....Bottom
-     cursor.style.top = (nextLetterorword || nextWord).getBoundingClientRect().bottom + 1 + 'px';
-     cursor.style.left = (nextLetterorword || nextWord).getBoundingClientRect()[nextLetterorword ? 'left' : 'right'] + 'px';
+    cursor.style.top = (nextLetterorword || nextWord).getBoundingClientRect().bottom + 1 + 'px';
+    cursor.style.left = (nextLetterorword || nextWord).getBoundingClientRect()[nextLetterorword ? 'left' : 'right'] + 'px';
+})
+
+
+document.getElementById("game").addEventListener('keydown', (e) => {
+    const isEnter = e.key === 'Enter';
+    if (isEnter) {
+        newGame();
+    }
+})
+document.getElementById("btn").addEventListener('click', () => {
+    newGame();
 })
 newGame();
