@@ -26,6 +26,7 @@ body {
     background-color: var(--bgColor);
     color: #FDF0F0;
     font-size: 1.4rem;
+    overflow: hidden;
 }
 
 main {
@@ -129,13 +130,20 @@ div.word {
     }
 }
 
-#cursor {
-    display:none; /* pel tomada none*/
-    width: 2px;
-    height: 1.6rem;
+/* #cursor {
+    display:none; 
+    width: 3px;
+    height: 32px;
     background-color: yellow;
     position: fixed;
-    top: 202px;
+    animation: blink 0.8s infinite;
+} */
+#cursor {
+    display:none; /* pel tomada none*/
+    width: 17px;
+    height: 3px;
+    background-color: yellow;
+    position: fixed;
     animation: blink 0.8s infinite;
 }
 #game:focus #cursor {
