@@ -1,8 +1,26 @@
-const words = 'Innovation drives Innovation drives progress fueling advancements in technology education and society Creativity and dedication empower individuals and organizations to overcome challenges and achieve remarkable feats Embracing change and adaptability is crucial in a constantly evolving world Continuous learning and growth foster resilience and innovation enabling success in diverse fields Collaborative efforts and diverse perspectives enrich problem-solving and decision-making processes Investing in education and equal opportunities ensures a brighter future for all Harnessing the power of data and technology can address pressing global issues and improve quality of life Empowering individuals with knowledge and resources creates a more inclusive prosperous world progress fueling advancements in technology education and society Creativity and dedication empower individuals and organizations to overcome challenges and achieve remarkable feats Embracing change and adaptability is crucial in a constantly evolving world Continuous learning and growth foster resilience and innovation enabling success in diverse fields Collaborative efforts and diverse perspectives enrich problem-solving and decision-making processes Investing in education and equal opportunities ensures a brighter future for all Harnessing the power of data and technology can address pressing global issues and improve quality of life Empowering individuals with knowledge and resources creates a more inclusive prosperous world'.split(' ');
+const words = 'My home is a cozy and welcoming place where I feel most comfortable It is a small apartment filled with warm colors and soft furnishings The living room has a comfy couch and a coffee table where I often relax with a book or watch TV The kitchen is compact but well equipped making it easy to cook meals My bedroom is my favorite spot with a comfortable bed and a desk where I study and work on projects The walls are adorned with pictures and memories that make it feel uniquely mine Overall my home is a peaceful sanctuary where I can unwind and be myself In addition to the main rooms there is a small balcony where I like to sit in the mornings and enjoy a cup of coffee while listening to the birds It is a quiet space that allows me to start my day peacefully The apartment is in a friendly neighborhood with helpful neighbors and a park nearby where I often go for walks in the evening The atmosphere in my home is always calm and serene making it the perfect place to relax after a long day I love the sense of security and comfort that my home provides It is truly a special place where I can be at ease and enjoy my time'.split(' ');
 // console.log(words);
 const wordsCount = words.length;
 
-const gameTime = 30 ; //30 sec
+var gameTime = 10;
+
+
+document.getElementById('sec30').addEventListener("click",()=>{
+    removeClass(document.querySelector(".info"),"info");
+    addClass(document.querySelector("#sec30"),'info');
+    gameTime = 30;
+})
+document.getElementById('sec10').addEventListener("click",()=>{
+    removeClass(document.querySelector(".info"),"info");
+    addClass(document.querySelector("#sec10"),'info');
+    gameTime = 10;
+})
+document.getElementById('sec60').addEventListener("click",()=>{
+    removeClass(document.querySelector(".info"),"info");
+    addClass(document.querySelector("#sec60"),'info');
+    gameTime = 60;
+    
+})
 window.timer = null;
 window.gameStart = null;
 
@@ -40,6 +58,27 @@ function newGame() {
     window.timer = null;
 
 }
+function getWPM(){
+    const words = [...document.querySelectorAll('.word')];
+    const lastTypeWord = document.querySelector('.word.current');
+    const typedWordsIndex = words.indexOf(lastTypeWord);
+    const typedWords = words.slice(0,typedWordsIndex);
+    const correctWords = typedWords.filter(word =>{
+        const letters =[...word.children]; // yok all letter
+        
+        const incorrectLetters = letters.filter(letter => letter.className.includes('incorrect'))
+        const correctLetters = letters.filter(letter => letter.className.includes('correct'))
+        return incorrectLetters.length === 0 && correctLetters.length === letters.length ;
+    });
+    return correctWords.length / (gameTime/60) ;
+}
+function gameOver(){
+    clearInterval(window.timer);
+    addClass(document.getElementById("game"),'over');
+    document.getElementsByClassName("info")[0].innerHTML = `WPM: ${getWPM()}`;
+}
+
+
 document.getElementById("game").addEventListener('keyup', (e) => {
     const key = e.key;
     const currentWord = document.querySelector(".word.current");
@@ -47,19 +86,26 @@ document.getElementById("game").addEventListener('keyup', (e) => {
     const expectedkey = currentLetter?.innerHTML || ' '; //So, the main difference is that the optional chaining operator (?.) prevents an error if currentLetter is null or undefined, while the direct property access (currentLetter.innerHTML) will throw an error in that case.  if one false it's goes to the other
     console.log({ key, expectedkey });
     const isLetter = key.length === 1 && key != ' ';
+
     //check space typed
     const isSpace = key === ' ';
     const isBackspace = key === 'Backspace';
     const isFirstLetter = currentLetter === currentWord.firstChild;
 
+
+    
     if (!window.timer && isLetter) { //not null //only in true
         window.timer = setInterval(() => {
             if (!window.gameStart) { //
                 window.gameStart = (new Date()).getSeconds(); //25 //get current time using data object //static
             }
             const currentTime = (new Date()).getSeconds(); //26
-            const sLeft = gameTime - (currentTime - window.gameStart); // 30 - (26 -25) // 30 -15 = 29
-            document.getElementById("info").innerHTML = sLeft - 1;
+            const sLeft = gameTime - (currentTime - window.gameStart) - 1; // 30 - (26 -25) // 30 -15 = 29
+            if(sLeft <= 0){
+                gameOver();
+                return;
+            }
+            document.getElementsByClassName("info")[0].innerHTML = sLeft ;
         }, 1000);
     }
 
@@ -77,6 +123,14 @@ document.getElementById("game").addEventListener('keyup', (e) => {
             currentWord.appendChild(incorrectLetterwhenspace);
         }
     }
+    // if (key.length === 1 && key != ' ') {
+    //     if (key === expectedkey) {
+    //         addClass(document.querySelector(".letter.current"), 'correct');
+    //     }
+    //     else {
+    //         addClass(document.querySelector(".letter.current"), 'incorrect');
+    //     }
+    // }
     if (isSpace) { //check if there a space? we type " "
         if (expectedkey !== ' ') { //check if the expectedkey is ' ' or not (mean space in mid)
             const letterToinvalidate = [...document.querySelectorAll('.word.current .letter:not(.correct)')]; //Have the letter class, Do not have the correct class, And are inside an element with both the word and current classes. //rest of the word in div // only the rest & inncorrect 1
@@ -150,14 +204,12 @@ document.getElementById("game").addEventListener('keyup', (e) => {
 
 })
 
-
-document.getElementById("game").addEventListener('keydown', (e) => {
-    const isEnter = e.key === 'Enter';
-    if (isEnter) {
-        newGame();
+document.getElementById("newGameBtn").addEventListener('click',()=>{
+    location.reload(true);
+})
+document.addEventListener('keydown', (e) => {
+    if (e.key === "Enter") {
+        location.reload(true);
     }
-})
-document.getElementById("btn").addEventListener('click', () => {
-    newGame();
-})
-newGame();
+});
+newGame(); 

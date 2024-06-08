@@ -55,7 +55,7 @@ h1 {
     
 }
 
-#info {
+.info{
     color: yellow;
     font-size: 3vh;
 }
@@ -149,4 +149,23 @@ div.word {
 }
 #game:focus #cursor {
     display: block; /* pel focus to normal*/
+}
+#game.over #words{
+    opacity: 0.5;
+    filter: blur(0);
+}
+#game.over:focus #cursor {
+    display: none; /* pel focus to normal*/
+}
+#game.over:focus #focus-error {
+    display: none;
+}
+.info,#sec30,#sec60{
+    cursor:pointer;
+}
+
+#timer{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
 }
