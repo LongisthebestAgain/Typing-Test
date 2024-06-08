@@ -23,7 +23,7 @@
 
 body {
     height: 100vh;
-    background-color: var(--bgColor);
+    background-image: linear-gradient(140deg,#132043,#1f4272a6,#f1b4bb41);
     color: #FDF0F0;
     font-size: 1.4rem;
     overflow: hidden;
@@ -52,6 +52,7 @@ h1 {
 #btn {
     display: flex;
     justify-content: right;
+    
 }
 
 #info {
