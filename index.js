@@ -1,25 +1,25 @@
-const words = 'My home is a cozy and welcoming place where I feel most comfortable It is a small apartment filled with warm colors and soft furnishings The living room has a comfy couch and a coffee table where I often relax with a book or watch TV The kitchen is compact but well equipped making it easy to cook meals My bedroom is my favorite spot with a comfortable bed and a desk where I study and work on projects The walls are adorned with pictures and memories that make it feel uniquely mine Overall my home is a peaceful sanctuary where I can unwind and be myself In addition to the main rooms there is a small balcony where I like to sit in the mornings and enjoy a cup of coffee while listening to the birds It is a quiet space that allows me to start my day peacefully The apartment is in a friendly neighborhood with helpful neighbors and a park nearby where I often go for walks in the evening The atmosphere in my home is always calm and serene making it the perfect place to relax after a long day I love the sense of security and comfort that my home provides It is truly a special place where I can be at ease and enjoy my time'.split(' ');
-// console.log(words);
+const words = 'on a sunny morning in june sarah decided to explore the old abandoned mansion on the outskirts of town she had always been curious about the stories that surrounded it ghostly apparitions mysterious noises and even hidden treasures as she approached the mansion her heart pounded with a mix of fear and excitement the grand wooden doors were slightly ajar creaking as she pushed them open inside the air was cool and musty cobwebs hung from the ceiling and dust covered the antique furniture hello she called out her voice echoing through the empty halls there was no response sarahs footsteps echoed as she moved cautiously through the rooms she noticed a grand staircase leading to the second floor and decided to investigate halfway up she heard a faint whisper sarah she froze gripping the banister whos there she demanded her voice trembling silence gathering her courage she continued to the top at the end of the hallway a door was slightly open she pushed it gently and found an old diary on a desk the first entry read june 9th 1924 today marks the beginning of a new adventure sarah felt a chill run down her spine'.split(' ');
+
 const wordsCount = words.length;
 
 var gameTime = 10;
 
 
-document.getElementById('sec30').addEventListener("click",()=>{
-    removeClass(document.querySelector(".info"),"info");
-    addClass(document.querySelector("#sec30"),'info');
+document.getElementById('sec30').addEventListener("click", () => {
+    removeClass(document.querySelector(".info"), "info");
+    addClass(document.querySelector("#sec30"), 'info');
     gameTime = 30;
 })
-document.getElementById('sec10').addEventListener("click",()=>{
-    removeClass(document.querySelector(".info"),"info");
-    addClass(document.querySelector("#sec10"),'info');
+document.getElementById('sec10').addEventListener("click", () => {
+    removeClass(document.querySelector(".info"), "info");
+    addClass(document.querySelector("#sec10"), 'info');
     gameTime = 10;
 })
-document.getElementById('sec60').addEventListener("click",()=>{
-    removeClass(document.querySelector(".info"),"info");
-    addClass(document.querySelector("#sec60"),'info');
+document.getElementById('sec60').addEventListener("click", () => {
+    removeClass(document.querySelector(".info"), "info");
+    addClass(document.querySelector("#sec60"), 'info');
     gameTime = 60;
-    
+
 })
 window.timer = null;
 window.gameStart = null;
@@ -58,23 +58,23 @@ function newGame() {
     window.timer = null;
 
 }
-function getWPM(){
+function getWPM() {
     const words = [...document.querySelectorAll('.word')];
     const lastTypeWord = document.querySelector('.word.current');
     const typedWordsIndex = words.indexOf(lastTypeWord);
-    const typedWords = words.slice(0,typedWordsIndex);
-    const correctWords = typedWords.filter(word =>{
-        const letters =[...word.children]; // yok all letter
-        
+    const typedWords = words.slice(0, typedWordsIndex);
+    const correctWords = typedWords.filter(word => {
+        const letters = [...word.children]; // yok all letter
+
         const incorrectLetters = letters.filter(letter => letter.className.includes('incorrect'))
         const correctLetters = letters.filter(letter => letter.className.includes('correct'))
-        return incorrectLetters.length === 0 && correctLetters.length === letters.length ;
+        return incorrectLetters.length === 0 && correctLetters.length === letters.length;
     });
-    return correctWords.length / (gameTime/60) ;
+    console.log(correctWords.length);
+    return correctWords.length / (gameTime / 60);
 }
-function gameOver(){
-    clearInterval(window.timer);
-    addClass(document.getElementById("game"),'over');
+function gameOver() {
+    addClass(document.getElementById("game"), 'over');
     document.getElementsByClassName("info")[0].innerHTML = `WPM: ${getWPM()}`;
 }
 
@@ -93,20 +93,21 @@ document.getElementById("game").addEventListener('keyup', (e) => {
     const isFirstLetter = currentLetter === currentWord.firstChild;
 
 
-    
+
     if (!window.timer && isLetter) { //not null //only in true
+        var countGame = gameTime;
         window.timer = setInterval(() => {
-            if (!window.gameStart) { //
-                window.gameStart = (new Date()).getSeconds(); //25 //get current time using data object //static
+
+            console.log(countGame);
+            document.getElementsByClassName("info")[0].innerHTML = countGame - 1;
+            if (countGame > 0) {
+                countGame--;
             }
-            const currentTime = (new Date()).getSeconds(); //26
-            const sLeft = gameTime - (currentTime - window.gameStart) - 1; // 30 - (26 -25) // 30 -15 = 29
-            if(sLeft <= 0){
+            if (countGame == 0) {
                 gameOver();
                 return;
             }
-            document.getElementsByClassName("info")[0].innerHTML = sLeft ;
-        }, 1000);
+        }, 1000)
     }
 
     if (isLetter) { //check this first
@@ -157,13 +158,29 @@ document.getElementById("game").addEventListener('keyup', (e) => {
         else {
             if (currentLetter && isFirstLetter) {  //for space purspose
                 if (currentWord.previousElementSibling) { // first letter
-                    removeClass(currentWord, 'current');
-                    addClass(currentWord.previousSibling, 'current');
-                    removeClass(currentLetter, 'current');
-
-                    addClass(currentWord.previousSibling.lastChild, 'current');
-                    removeClass(currentWord.previousSibling.lastChild, 'incorrect');
-                    removeClass(currentWord.previousSibling.lastChild, 'correct');
+                    // const afterspace = currentWord.previousSibling.lastChild;
+                    // if ([...currentWord.previousSibling.querySelectorAll('.letter.incorrect.extra')].length > 0) {
+                    //     afterspace.remove();
+                    //     removeClass(currentWord, 'current');
+                    //     addClass(currentWord.previousSibling, 'current');
+                    //     removeClass(currentLetter, 'current');
+                    //     addClass(currentWord.previousSibling.lastChild, 'current');
+                    // }
+                    //     removeClass(currentWord, 'current');
+                    //     addClass(currentWord.previousSibling, 'current');
+                    //     removeClass(currentLetter, 'current');
+                    //     addClass(currentWord.previousSibling.lastChild, 'current');
+                
+                        removeClass(currentWord, 'current');
+                        addClass(currentWord.previousSibling, 'current');
+                        removeClass(currentLetter, 'current');
+                        addClass(currentWord.previousSibling.lastChild, 'current');
+                        removeClass(currentWord.previousSibling.lastChild, 'incorrect');
+                        removeClass(currentWord.previousSibling.lastChild, 'correct');
+                        if ([...currentWord.previousSibling.querySelectorAll('.letter.incorrect.extra')].length > 0){
+                            (currentWord.previousSibling.lastChild).remove();
+                        }
+                        
                 }
             }
             if (currentLetter && !isFirstLetter) {
@@ -196,15 +213,15 @@ document.getElementById("game").addEventListener('keyup', (e) => {
     const nextWord = document.querySelector('.word.current');
     const cursor = document.getElementById("cursor");
     //.....left
-    // cursor.style.top = (nextLetterorword || nextWord).getBoundingClientRect().top + 3 + 'px';
-    // cursor.style.left = (nextLetterorword || nextWord).getBoundingClientRect()[nextLetterorword ? 'left' : 'right'] + 'px';
-    //.....Bottom
-    cursor.style.top = (nextLetterorword || nextWord).getBoundingClientRect().bottom + 1 + 'px';
+    cursor.style.top = (nextLetterorword || nextWord).getBoundingClientRect().top + 3 + 'px';
     cursor.style.left = (nextLetterorword || nextWord).getBoundingClientRect()[nextLetterorword ? 'left' : 'right'] + 'px';
+    //.....Bottom
+    // cursor.style.top = (nextLetterorword || nextWord).getBoundingClientRect().bottom + 1 + 'px';
+    // cursor.style.left = (nextLetterorword || nextWord).getBoundingClientRect()[nextLetterorword ? 'left' : 'right'] + 'px';
 
 })
 
-document.getElementById("newGameBtn").addEventListener('click',()=>{
+document.getElementById("newGameBtn").addEventListener('click', () => {
     location.reload(true);
 })
 document.addEventListener('keydown', (e) => {
