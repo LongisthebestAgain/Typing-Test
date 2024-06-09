@@ -2,7 +2,7 @@ const words = 'on a sunny morning in june sarah decided to explore the old aband
 
 const wordsCount = words.length;
 
-var gameTime = 10;
+var gameTime = 109;
 
 
 document.getElementById('sec30').addEventListener("click", () => {
@@ -146,15 +146,17 @@ document.getElementById("game").addEventListener('keyup', (e) => {
         else {
             if (currentLetter && isFirstLetter) {  //for space purspose
                 if (currentWord.previousElementSibling) { // first letter
+                    const isOneWrong = ([...currentWord.previousSibling.querySelectorAll('.letter.incorrect.extra')].length );
                     removeClass(currentWord, 'current');
                     addClass(currentWord.previousSibling, 'current');
-    
+                    
                     removeClass(currentLetter, 'current');
                     addClass(currentWord.previousSibling.lastChild, 'current');
                         removeClass(currentWord.previousSibling.lastChild, 'incorrect');
                         removeClass(currentWord.previousSibling.lastChild, 'correct');
-                        if ([...currentWord.previousSibling.querySelectorAll('.letter.incorrect.extra')].length >= 0){
-                            (currentWord.previousSibling.lastChild).remove();
+                        
+                        if (isOneWrong > 0){
+                                (currentWord.previousSibling.lastChild).remove();
                         }
                         
                 }
