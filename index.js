@@ -91,9 +91,6 @@ document.getElementById("game").addEventListener('keyup', (e) => {
     const isSpace = key === ' ';
     const isBackspace = key === 'Backspace';
     const isFirstLetter = currentLetter === currentWord.firstChild;
-
-
-
     if (!window.timer && isLetter) { //not null //only in true
         var countGame = gameTime;
         window.timer = setInterval(() => {
@@ -109,7 +106,6 @@ document.getElementById("game").addEventListener('keyup', (e) => {
             }
         }, 1000)
     }
-
     if (isLetter) { //check this first
         if (currentLetter) {
             addClass(currentLetter, key === expectedkey ? 'correct' : 'incorrect')
@@ -124,14 +120,6 @@ document.getElementById("game").addEventListener('keyup', (e) => {
             currentWord.appendChild(incorrectLetterwhenspace);
         }
     }
-    // if (key.length === 1 && key != ' ') {
-    //     if (key === expectedkey) {
-    //         addClass(document.querySelector(".letter.current"), 'correct');
-    //     }
-    //     else {
-    //         addClass(document.querySelector(".letter.current"), 'incorrect');
-    //     }
-    // }
     if (isSpace) { //check if there a space? we type " "
         if (expectedkey !== ' ') { //check if the expectedkey is ' ' or not (mean space in mid)
             const letterToinvalidate = [...document.querySelectorAll('.word.current .letter:not(.correct)')]; //Have the letter class, Do not have the correct class, And are inside an element with both the word and current classes. //rest of the word in div // only the rest & inncorrect 1
@@ -158,26 +146,14 @@ document.getElementById("game").addEventListener('keyup', (e) => {
         else {
             if (currentLetter && isFirstLetter) {  //for space purspose
                 if (currentWord.previousElementSibling) { // first letter
-                    // const afterspace = currentWord.previousSibling.lastChild;
-                    // if ([...currentWord.previousSibling.querySelectorAll('.letter.incorrect.extra')].length > 0) {
-                    //     afterspace.remove();
-                    //     removeClass(currentWord, 'current');
-                    //     addClass(currentWord.previousSibling, 'current');
-                    //     removeClass(currentLetter, 'current');
-                    //     addClass(currentWord.previousSibling.lastChild, 'current');
-                    // }
-                    //     removeClass(currentWord, 'current');
-                    //     addClass(currentWord.previousSibling, 'current');
-                    //     removeClass(currentLetter, 'current');
-                    //     addClass(currentWord.previousSibling.lastChild, 'current');
-                
-                        removeClass(currentWord, 'current');
-                        addClass(currentWord.previousSibling, 'current');
-                        removeClass(currentLetter, 'current');
-                        addClass(currentWord.previousSibling.lastChild, 'current');
+                    removeClass(currentWord, 'current');
+                    addClass(currentWord.previousSibling, 'current');
+    
+                    removeClass(currentLetter, 'current');
+                    addClass(currentWord.previousSibling.lastChild, 'current');
                         removeClass(currentWord.previousSibling.lastChild, 'incorrect');
                         removeClass(currentWord.previousSibling.lastChild, 'correct');
-                        if ([...currentWord.previousSibling.querySelectorAll('.letter.incorrect.extra')].length > 0){
+                        if ([...currentWord.previousSibling.querySelectorAll('.letter.incorrect.extra')].length >= 0){
                             (currentWord.previousSibling.lastChild).remove();
                         }
                         
