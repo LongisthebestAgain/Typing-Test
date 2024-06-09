@@ -2,7 +2,7 @@ const words = 'on a sunny morning in june sarah decided to explore the old aband
 
 const wordsCount = words.length;
 
-var gameTime = 109;
+var gameTime = 10;
 
 
 document.getElementById('sec30').addEventListener("click", () => {
