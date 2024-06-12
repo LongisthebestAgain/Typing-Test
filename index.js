@@ -76,8 +76,11 @@ function getWPM() {
 function gameOver() {
     addClass(document.getElementById("game"), 'over');
     document.getElementsByClassName("info")[0].innerHTML = `WPM: ${getWPM()}`;
+    const currentWord = document.querySelector(".word.current");
+    const currentLetter = document.querySelector(".letter.current");
+    removeClass(currentLetter, 'current');
+    removeClass(currentWord, 'current');
 }
-
 
 document.getElementById("game").addEventListener('keyup', (e) => {
     const key = e.key;
@@ -91,7 +94,7 @@ document.getElementById("game").addEventListener('keyup', (e) => {
     const isSpace = key === ' ';
     const isBackspace = key === 'Backspace';
     const isFirstLetter = currentLetter === currentWord.firstChild;
-    if (!window.timer && isLetter) { //not null //only in true
+    if ((!window.timer && isLetter))  { //not null //only in true
         var countGame = gameTime;
         window.timer = setInterval(() => {
 
@@ -102,7 +105,8 @@ document.getElementById("game").addEventListener('keyup', (e) => {
             }
             if (countGame == 0) {
                 gameOver();
-                return;
+                return ;
+                
             }
         }, 1000)
     }
