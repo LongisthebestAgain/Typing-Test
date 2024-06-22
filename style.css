@@ -110,11 +110,13 @@ div.word {
 }
 
 .letter.correct {
+    animation: styleblink 0.4s ;
     color: #fff;
 }
 
 .letter.incorrect {
     color: #ff0000d3;
+    animation: styleblink 0.4s ;
 }
 
 @keyframes blink {
@@ -131,6 +133,15 @@ div.word {
     }
 }
 
+@keyframes styleblink {
+    50% {
+        opacity: 0.6;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
 #cursor {
     display:none; 
     width: 3px;
